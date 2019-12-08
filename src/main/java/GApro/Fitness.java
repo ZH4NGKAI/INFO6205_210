@@ -18,7 +18,7 @@ public class Fitness {
     public Fitness(String gtfStr,Long generation){
         this.gtfStr=gtfStr;
         this.generation = generation;
-        this.fitnessScore = (double)generation/10000;
+        this.fitnessScore = (double)generation/1000;
     }
 
     public double getFitnessScore() {

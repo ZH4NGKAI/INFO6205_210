@@ -17,7 +17,11 @@ import io.jenetics.Optimize;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -32,7 +36,7 @@ public class RunGameHere {
         //generate a population
         Population population = new Population(sizeOfPopulation);
         HashMap<String,String> patternMap = population.getPopulation();
-        HashMap<Double,String> scoreMap = new HashMap<>();
+        HashMap<String,Double> scoreMap = new HashMap<>();
         //System.out.println(patternMap);
         int genoTypeNo = 1;
        
@@ -44,11 +48,32 @@ public class RunGameHere {
             
             Fitness fitness = new Fitness(pattern,generations);
             double fitnessScore = fitness.getFitnessScore();
-            scoreMap.put(fitnessScore,genoType);
+            scoreMap.put(genoType,fitnessScore);
             genoTypeNo++;
         }
-        System.out.println(scoreMap);
+        //System.out.println(scoreMap);
         
+        //sort by score
+        Map<String,Double> sortedMap = scoreMap.entrySet()
+              .stream()
+              .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+               .collect(Collectors
+                          .toMap(Map.Entry::getKey,
+                                 Map.Entry::getValue,
+                                 (e1, e2) -> e1,
+                                 LinkedHashMap::new));
+
+        
+        //top 5
+        int top = 1;
+        for(String pattern : sortedMap.keySet()){
+            if(top <= 10){
+                System.out.println("top "+top+" genoType is: "+pattern+"\nFitness Score is "+sortedMap.get(pattern));
+                top++;
+            }
+        }
+
+
 
         
     }
