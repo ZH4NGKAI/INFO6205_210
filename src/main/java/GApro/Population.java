@@ -5,6 +5,9 @@
  */
 package GApro;
 
+import io.jenetics.BitGene;
+import io.jenetics.Genotype;
+import io.jenetics.util.Factory;
 import java.util.HashMap;
 
 /**
@@ -13,15 +16,19 @@ import java.util.HashMap;
  */
 public class Population {
     private int populationSize;
-    private HashMap<String,String> population;
+    private HashMap<String,String> population ;
 
     public Population(int populationSize) {
         this.populationSize = populationSize;
+        this.population= new HashMap<>();
         for(int i=0; i<populationSize;i++){
-            GenoType genoType = new GenoType(20);
-            String gtfStr = genoType.getGftStr();
+            //10 to 30
+            int numberOfChromosome = (int) (Math.random()*20+10);
+            GenoType genoType = new GenoType(numberOfChromosome);
+            Factory<Genotype<BitGene>> gtf = genoType.getGtf();
+            String gtfStr=genoType.getGtfStr(gtf);
+            System.out.println("my pattern: "+genoType.getPetternStr(gtfStr));
             String patternStr = genoType.getPetternStr(gtfStr);
-            this.population = new HashMap<>();
             this.population.put(gtfStr, patternStr);
         }
     }

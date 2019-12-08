@@ -2,6 +2,9 @@ package edu.neu.coe.info6205.life.base;
 
 import GApro.GenoType;
 import edu.neu.coe.info6205.life.library.Library;
+import io.jenetics.BitGene;
+import io.jenetics.Genotype;
+import io.jenetics.util.Factory;
 import java.util.HashMap;
 
 import java.util.List;
@@ -116,7 +119,8 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				String patternName = args.length > 0 ? args[0] : "ourPattern";
 				System.out.println("Game of Life with starting pattern: " + patternName);
 				//final String pattern = Library.get(patternName);
-                                String gtfStr = genoType.getGftStr();
+                                Factory<Genotype<BitGene>> gtf = genoType.getGtf();
+                                String gtfStr=genoType.getGtfStr(gtf);
                                 System.out.println("my pattern: "+genoType.getPetternStr(gtfStr));
                                 final String pattern = genoType.getPetternStr(gtfStr);
 				//final Behavior generations = run(0L, pattern);
@@ -133,7 +137,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		 */
                 
                 //save old generations
-                public static final Map<Game, Long> oldGenerations = new HashMap<>();
+                //public static final Map<Game, Long> oldGenerations = new HashMap<>();
                 public static Long myRun(String pattern) {
 				final long generation = 0L;
 				final Grid grid = new Grid(generation);
@@ -143,7 +147,23 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				BiConsumer<Long, Group> groupMonitor = (l, g) -> System.out.println("generation " + l + ";\ngroup=\n" + g.render()+ "\ncount=" + g.getCount());
 				Game game = new Game(generation, grid, null, groupMonitor);
 				while (!game.terminated()) {
-						oldGenerations.put(game, game.generation);
+						//oldGenerations.put(game, game.generation);
+						game = game.generation(gridMonitor);
+				}
+				System.out.println("Ending Game of Life after " + game.generation + " generations and with " + game.getCount() + " cells");
+				return game.generation;
+		}
+                
+                public static Long myRunWithoutPrint(String pattern) {
+				final long generation = 0L;
+				final Grid grid = new Grid(generation);
+				grid.add(Group.create(generation, pattern));
+				BiConsumer<Long, Grid> gridMonitor = (l, g) -> System.out.print(/*"generation " + l + "; grid=" + g*/"");
+                                //print plot and count
+				BiConsumer<Long, Group> groupMonitor = (l, g) -> System.out.print(/*"generation " + l + ";\ngroup=\n" + g.render()+ "\ncount=" + g.getCount()*/"");
+				Game game = new Game(generation, grid, null, groupMonitor);
+				while (!game.terminated()) {
+						//oldGenerations.put(game, game.generation);
 						game = game.generation(gridMonitor);
 				}
 				System.out.println("Ending Game of Life after " + game.generation + " generations and with " + game.getCount() + " cells");
@@ -266,14 +286,14 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				}
 		}
 
-		private Game(long generation, Grid grid, Game previous, BiConsumer<Long, Group> monitor) {
+		public Game(long generation, Grid grid, Game previous, BiConsumer<Long, Group> monitor) {
 				this.grid = grid;
 				this.generation = generation;
 				this.previous = previous;
 				this.monitor = monitor;
 		}
 
-		private boolean terminated() {
+		public boolean terminated() {
 				return testTerminationPredicate(g -> g.generation >= MaxGenerations, "having exceeded " + MaxGenerations + " generations") ||
                                        testTerminationPredicate(g -> g.getCount() <= 1, "extinction"); 
 								// TODO now we look for two consecutive equivalent games...
@@ -347,6 +367,6 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
                 private final Grid grid;
 		private final Game previous;
 		private final BiConsumer<Long, Group> monitor;
-		private final long generation;
+		public final long generation;
 		
 }
