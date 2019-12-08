@@ -27,7 +27,7 @@ public class GenoType{
         Factory<Genotype<BitGene>> gtf =
             Genotype.of(BitChromosome.of(8,0.5),numberOfChromosome);
         this.gtf = gtf;
-        
+
         String gtfStr = gtf.toString();
 	Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtfStr);

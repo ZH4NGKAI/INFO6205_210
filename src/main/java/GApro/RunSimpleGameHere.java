@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  *
  * @author wangbaichao
  */
-public class RunGameHere {
+public class RunSimpleGameHere {
     
     private static int sizeOfPopulation = 20;
          
