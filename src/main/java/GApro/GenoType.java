@@ -17,8 +17,9 @@ import java.util.Random;
 
 public class GenoType{
     private int numberOfChromosome;
-    private String petternStr;
-    private final Random random = new Random();
+    //private String petternStr;
+    private String gftStr;
+    private HashMap<String,String> directionMap;
     
     public GenoType(int numberOfChromosome){
         this.numberOfChromosome=numberOfChromosome;
@@ -30,10 +31,10 @@ public class GenoType{
 	Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtfStr);
 	gtfStr = (m.replaceAll("").trim()).toString();
-        //System.out.println("after data clean:\n" + gtfStr);
+        this.gftStr = gtfStr;
         
-        //generate direction map
-        HashMap<String,String> directionMap = new HashMap<>();
+        //generate direction map       
+        this.directionMap = new HashMap<>();
         //left up
         directionMap.put("000", "-1+1");
         //up 
@@ -50,9 +51,14 @@ public class GenoType{
         directionMap.put("110", "-1-1");
         //left
         directionMap.put("111", "-1+0");
-        
+
+    }
+    
+    //gene expression (from gnee to pattern)
+    public String getPetternStr(String gtfStr) {
         //generate pattern String
         String patternStr = "";
+        //String gtfStr = this.gftStr;
         List<String> dup = new ArrayList<>();
         while(gtfStr.length()>0){
             //transform gtf to point
@@ -93,13 +99,11 @@ public class GenoType{
             if(gtfStr.length()>0) patternStr=patternStr.concat(", ");
              
         }
-        this.petternStr=patternStr;  
-        
-        //System.out.println(patternStr);
+        return patternStr;
     }
 
-    public String getPetternStr() {
-        return petternStr;
+    public String getGftStr() {
+        return gftStr;
     }
     
     
