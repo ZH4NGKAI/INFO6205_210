@@ -5,23 +5,27 @@
  */
 package GApro;
 
+import edu.neu.coe.info6205.life.base.Game;
+
 /**
  *
  * @author wangbaichao
  */
 public class Fitness {
-    private double fitnessScore;
+    private long fitnessScore;
     private String gtfStr;
-    private Long generation;
+    private long generation;
     
     
-    public Fitness(String gtfStr,Long generation){
+    public Fitness(String gtfStr){
         this.gtfStr=gtfStr;
-        this.generation = generation;
-        this.fitnessScore = (double)generation/1000;
+        Game game=new Game();
+        this.generation = Game.myRun(gtfStr);
+        this.fitnessScore = generation;
+    
     }
 
-    public double getFitnessScore() {
+    public long getFitnessScore() {
         return fitnessScore;
     }
 
@@ -29,7 +33,8 @@ public class Fitness {
         return gtfStr;
     }
 
-    public Long getGeneration() {
+    public long getGeneration() {
+    
         return generation;
     }
     

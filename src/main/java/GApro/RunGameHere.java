@@ -46,7 +46,7 @@ public class RunGameHere {
             
             Long generations = myRunWithoutPrint(pattern);
             
-            Fitness fitness = new Fitness(pattern,generations);
+            Fitness fitness = new Fitness(pattern);
             double fitnessScore = fitness.getFitnessScore();
             scoreMap.put(genoType,fitnessScore);
             genoTypeNo++;

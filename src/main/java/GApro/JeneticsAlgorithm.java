@@ -14,8 +14,12 @@ import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.Mutator;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Limits;
 import io.jenetics.util.Factory;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +35,14 @@ import java.util.regex.Pattern;
 public class JeneticsAlgorithm {
     private static int run;
     public static long eval(Genotype<BitGene> gt) {
-        
         String gtS = gt.toString();
         Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtS);
 	gtS = (m.replaceAll("").trim()).toString();
-        String patternStr = GenoType.getPetternStr(gtS);
+        String gtStr = GenoType.getPetternStr(gtS);
 
         Game game=new Game();
-        Long generations = Game.myRunWithoutPrint(patternStr);
+        Long generations = Game.myRun(gtStr);
 
         run++;
         return generations;
@@ -48,19 +51,20 @@ public class JeneticsAlgorithm {
     public static void main(String[] args) {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 20);
-        ExecutorService executor = Executors.newFixedThreadPool(12);
+        ExecutorService executor = Executors.newFixedThreadPool(8);
         Engine<BitGene, Long> engine
                     = Engine.builder(JeneticsAlgorithm::eval, gtf)
-                            .offspringFraction(0.7)
+                            .offspringFraction(0.5)
                             .populationSize(10)
-                            .selector(new EliteSelector<>(5))
-                            .alterers(new Mutator<>(0.05))
+                            .survivorsSelector(new TournamentSelector<>(5))
+                            .offspringSelector(new RouletteWheelSelector<>())
+                            .alterers(new Mutator<>(0.1), new SinglePointCrossover(0.1))
                             .executor(executor)
                             .build();
 
         Genotype<BitGene> result
                     = engine.stream()
-                            .limit(10)
+                            .limit(Limits.bySteadyFitness(1000))
                             .collect(EvolutionResult.toBestGenotype());
             
         System.out.println("RUN:     "+run);
@@ -68,16 +72,16 @@ public class JeneticsAlgorithm {
 
 
         String pos=getStartingPattern(result);
-        System.out.println("Best:"+pos);
+        System.out.println("Best:"+result);
     }
     
     public static String getStartingPattern(Genotype<BitGene> result){
 
        String gtS = result.toString();
-       Pattern p = Pattern.compile("[^0-9]");  
-       Matcher m = p.matcher(gtS);
-       gtS = (m.replaceAll("").trim()).toString();
-       String gtStr = GenoType.getPetternStr(gtS);
+        Pattern p = Pattern.compile("[^0-9]");  
+	Matcher m = p.matcher(gtS);
+	gtS = (m.replaceAll("").trim()).toString();
+        String gtStr = GenoType.getPetternStr(gtS);
        return gtStr;
     }
 }
