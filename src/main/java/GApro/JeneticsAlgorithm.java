@@ -42,7 +42,7 @@ public class JeneticsAlgorithm {
         String gtStr = GenoType.getPetternStr(gtS);
 
         Game game=new Game();
-        Long generations = Game.myRun(gtStr);
+        Long generations = Game.myRunWithoutPrint(gtStr);
 
         run++;
         return generations;
@@ -72,7 +72,7 @@ public class JeneticsAlgorithm {
 
 
         String pos=getStartingPattern(result);
-        System.out.println("Best:"+result);
+        System.out.println("Best:"+pos);
     }
     
     public static String getStartingPattern(Genotype<BitGene> result){

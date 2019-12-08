@@ -20,7 +20,7 @@ public class Fitness {
     public Fitness(String gtfStr){
         this.gtfStr=gtfStr;
         Game game=new Game();
-        this.generation = Game.myRun(gtfStr);
+        this.generation = Game.myRunWithoutPrint(gtfStr);
         this.fitnessScore = generation;
     
     }
