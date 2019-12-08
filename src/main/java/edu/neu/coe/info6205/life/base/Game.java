@@ -108,7 +108,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				return generations > 0 ? growth * 1.0 / generations : -0.1;
 		}
 
-		public static final int MaxGenerations = 1000;
+		public static int MaxGenerations = 1000;
 
 		/**
 		 * Main program for Game of Life.
@@ -183,6 +183,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		 * @return the generation at which the game expired.
 		 */
 		public static Behavior run(long generation, String pattern, int maxGenerations) {
+                    MaxGenerations = maxGenerations;
 				return run(generation, Point.points(pattern), maxGenerations);
 		}
 
@@ -195,6 +196,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		 * @return the generation at which the game expired.
 		 */
 		public static Behavior run(long generation, List<Point> points, int maxGenerations) {
+                    MaxGenerations = maxGenerations;
 				return run(create(generation, points), (l, g) -> System.out.println("generation " + l + "; grid=" + g), maxGenerations);
 		}
 
