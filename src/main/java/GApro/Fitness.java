@@ -12,13 +12,13 @@ package GApro;
 public class Fitness {
     private double fitnessScore;
     private String gtfStr;
-    private int generation;
+    private Long generation;
     
     
-    public Fitness(String gtfStr,int generation){
+    public Fitness(String gtfStr,Long generation){
         this.gtfStr=gtfStr;
         this.generation = generation;
-        this.fitnessScore = (double)generation/10000;
+        this.fitnessScore = (double)generation/1000;
     }
 
     public double getFitnessScore() {
@@ -29,7 +29,7 @@ public class Fitness {
         return gtfStr;
     }
 
-    public int getGeneration() {
+    public Long getGeneration() {
         return generation;
     }
     

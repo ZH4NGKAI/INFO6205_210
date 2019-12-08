@@ -17,19 +17,29 @@ import java.util.Random;
 
 public class GenoType{
     private int numberOfChromosome;
+<<<<<<< HEAD
+    private static HashMap<String,String> directionMap;
+    private static Factory<Genotype<BitGene>> gtf;
+=======
     //private String petternStr;
     private String gftStr;
     private static HashMap<String,String> directionMap;
+>>>>>>> 7c726f46a6dabb193760aad29749465990130555
     
     public GenoType(int numberOfChromosome){
         this.numberOfChromosome=numberOfChromosome;
         Factory<Genotype<BitGene>> gtf =
             Genotype.of(BitChromosome.of(8,0.5),numberOfChromosome);
+<<<<<<< HEAD
+        this.gtf = gtf;
+        
+=======
         String gtfStr = gtf.toString();
 	Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtfStr);
 	gtfStr = (m.replaceAll("").trim()).toString();
         this.gftStr = gtfStr;
+>>>>>>> 7c726f46a6dabb193760aad29749465990130555
         
         //generate direction map       
         this.directionMap = new HashMap<>();
@@ -50,6 +60,36 @@ public class GenoType{
         //left
         directionMap.put("111", "-1+0");
 
+    }
+    
+    public GenoType(){
+        //generate direction map       
+        this.directionMap = new HashMap<>();
+        //left up
+        directionMap.put("000", "-1+1");
+        //up 
+        directionMap.put("001", "+0+1");
+        //right up
+        directionMap.put("010", "+1+1");
+        //right
+        directionMap.put("100", "+1+0");
+        //right down 
+        directionMap.put("011", "+1-1");
+        //down
+        directionMap.put("101", "+0-1");
+        //left down
+        directionMap.put("110", "-1-1");
+        //left
+        directionMap.put("111", "-1+0");
+    }
+    
+    public static String getGtfStr(Factory<Genotype<BitGene>> gtf){
+        // remove ",[]" from gtf
+        String gtfStr = gtf.toString();
+	Pattern p = Pattern.compile("[^0-9]");  
+	Matcher m = p.matcher(gtfStr);
+	gtfStr = (m.replaceAll("").trim()).toString();
+        return gtfStr;
     }
     
     //gene expression (from gnee to pattern)
@@ -100,9 +140,12 @@ public class GenoType{
         return patternStr;
     }
 
-    public String getGftStr() {
-        return gftStr;
+
+
+    public Factory<Genotype<BitGene>> getGtf() {
+        return gtf;
     }
+    
     
     
 	
