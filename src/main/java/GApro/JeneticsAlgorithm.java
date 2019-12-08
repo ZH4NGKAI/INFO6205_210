@@ -14,8 +14,12 @@ import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.Mutator;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Limits;
 import io.jenetics.util.Factory;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,7 @@ import java.util.regex.Pattern;
  *
  * @author mac
  */
-public class GA {
+public class JeneticsAlgorithm {
     private static int run;
     public static long eval(Genotype<BitGene> gt) {
         String gtS = gt.toString();
@@ -47,19 +51,20 @@ public class GA {
     public static void main(String[] args) {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 20);
-        ExecutorService executor = Executors.newFixedThreadPool(7);
+        ExecutorService executor = Executors.newFixedThreadPool(8);
         Engine<BitGene, Long> engine
-                    = Engine.builder(GA::eval, gtf)
-                            .offspringFraction(0.7)
+                    = Engine.builder(JeneticsAlgorithm::eval, gtf)
+                            .offspringFraction(0.5)
                             .populationSize(10)
-                            .selector(new EliteSelector<>(5))
-                            .alterers(new Mutator<>(0.05))
+                            .survivorsSelector(new TournamentSelector<>(5))
+                            .offspringSelector(new RouletteWheelSelector<>())
+                            .alterers(new Mutator<>(0.1), new SinglePointCrossover(0.1))
                             .executor(executor)
                             .build();
 
         Genotype<BitGene> result
                     = engine.stream()
-                            .limit(10)
+                            .limit(Limits.bySteadyFitness(1000))
                             .collect(EvolutionResult.toBestGenotype());
             
         System.out.println("RUN:     "+run);
