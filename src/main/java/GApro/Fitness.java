@@ -22,6 +22,7 @@ public class Fitness {
         Game game=new Game();
         this.generation = Game.myRun(gtfStr);
         this.fitnessScore = generation;
+    
     }
 
     public long getFitnessScore() {
@@ -33,6 +34,7 @@ public class Fitness {
     }
 
     public long getGeneration() {
+    
         return generation;
     }
     
