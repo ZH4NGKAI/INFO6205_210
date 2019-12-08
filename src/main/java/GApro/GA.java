@@ -19,6 +19,8 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +31,6 @@ import java.util.regex.Pattern;
 public class GA {
     private static int run;
     public static long eval(Genotype<BitGene> gt) {
-        
         String gtS = gt.toString();
         Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtS);
@@ -46,12 +47,14 @@ public class GA {
     public static void main(String[] args) {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 20);
+        ExecutorService executor = Executors.newFixedThreadPool(7);
         Engine<BitGene, Long> engine
                     = Engine.builder(GA::eval, gtf)
                             .offspringFraction(0.7)
                             .populationSize(10)
                             .selector(new EliteSelector<>(5))
                             .alterers(new Mutator<>(0.05))
+                            .executor(executor)
                             .build();
 
         Genotype<BitGene> result
