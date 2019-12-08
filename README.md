@@ -1,11 +1,12 @@
-# INFO6205_210 Game of Life project
-
+# INFO6205_210 (sec 2) Game of Life project
+Kai Zhang   001306003
+Bochao Wang 001087950
 ## Class:
 
 ### 1.Fitness: 
 Define a simple Fitness function: fitnessScore = generations * growthrate + 100
 
-### 2.GEnoType: 
+### 2.GenoType: 
 Define chromosomes and genotypes, and how genotypes are expressed
 
 ### 3.JeneticsAlgorithm(run this):
