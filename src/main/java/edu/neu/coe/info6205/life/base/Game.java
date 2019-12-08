@@ -116,8 +116,9 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				String patternName = args.length > 0 ? args[0] : "ourPattern";
 				System.out.println("Game of Life with starting pattern: " + patternName);
 				//final String pattern = Library.get(patternName);
-                                System.out.println("my pattern: "+genoType.getPetternStr());
-                                final String pattern = genoType.getPetternStr();
+                                String gtfStr = genoType.getGftStr();
+                                System.out.println("my pattern: "+genoType.getPetternStr(gtfStr));
+                                final String pattern = genoType.getPetternStr(gtfStr);
 				//final Behavior generations = run(0L, pattern);
                                 Long generations = myRun(pattern);
 				System.out.println("Ending Game of Life after " + generations + " generations");
@@ -131,8 +132,8 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		 * @return the generation at which the game expired.
 		 */
                 
-
-                public static final Map<Game, Long> generations = new HashMap<>();
+                //save old generations
+                public static final Map<Game, Long> oldGenerations = new HashMap<>();
                 public static Long myRun(String pattern) {
 				final long generation = 0L;
 				final Grid grid = new Grid(generation);
@@ -142,7 +143,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				BiConsumer<Long, Group> groupMonitor = (l, g) -> System.out.println("generation " + l + ";\ngroup=\n" + g.render()+ "\ncount=" + g.getCount());
 				Game game = new Game(generation, grid, null, groupMonitor);
 				while (!game.terminated()) {
-						generations.put(game, game.generation);
+						oldGenerations.put(game, game.generation);
 						game = game.generation(gridMonitor);
 				}
 				System.out.println("Ending Game of Life after " + game.generation + " generations and with " + game.getCount() + " cells");
