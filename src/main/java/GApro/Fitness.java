@@ -21,7 +21,8 @@ public class Fitness {
         this.gtfStr=gtfStr;
         Game game=new Game();
         this.generation = Game.myRunWithoutPrint(gtfStr);
-        this.fitnessScore = generation;
+        double rate = game.growthRate();
+        this.fitnessScore = (long) (this.generation * rate+100);
     
     }
 

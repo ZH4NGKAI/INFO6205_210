@@ -24,7 +24,7 @@ public class GameTest {
 				System.out.println("Game of Life with starting pattern: " + patternName);
 				final String pattern = Library.get(patternName);
 				final Game.Behavior generations = Game.run(0L, pattern);
-				assertEquals(new Game.Behavior(2, 0, 1), generations);
+				assertEquals(new Game.Behavior(1000, 0, 2), generations);
 		}
 
 		@Test

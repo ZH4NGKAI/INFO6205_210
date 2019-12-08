@@ -22,7 +22,7 @@ public class FitnessTest {
         System.out.println("Game of Life with starting pattern: " + patternName);
         final String pattern = Library.get(patternName);
         Fitness fitness = new Fitness(pattern);
-	assertEquals(0, fitness.getFitnessScore());
+	assertEquals(100, fitness.getFitnessScore());
     }
     
     @Test
@@ -31,6 +31,10 @@ public class FitnessTest {
 				System.out.println("Game of Life with starting pattern: " + patternName);
 				final String pattern = Library.get(patternName);
 				Fitness fitness = new Fitness(pattern);
-				assertEquals(Game.run(0L, pattern).generation, fitness.getFitnessScore());
+                                Game game=new Game();
+                                long generation = Game.myRunWithoutPrint(pattern);
+                                double rate = game.growthRate();
+                                long result = (long)(generation * rate+100);
+				assertEquals(result, fitness.getFitnessScore());
 		}
 }
