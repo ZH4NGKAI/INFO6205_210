@@ -17,29 +17,23 @@ import java.util.Random;
 
 public class GenoType{
     private int numberOfChromosome;
-<<<<<<< HEAD
     private static HashMap<String,String> directionMap;
     private static Factory<Genotype<BitGene>> gtf;
-=======
+
     //private String petternStr;
     private String gftStr;
-    private static HashMap<String,String> directionMap;
->>>>>>> 7c726f46a6dabb193760aad29749465990130555
     
     public GenoType(int numberOfChromosome){
         this.numberOfChromosome=numberOfChromosome;
         Factory<Genotype<BitGene>> gtf =
             Genotype.of(BitChromosome.of(8,0.5),numberOfChromosome);
-<<<<<<< HEAD
         this.gtf = gtf;
-        
-=======
         String gtfStr = gtf.toString();
 	Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtfStr);
 	gtfStr = (m.replaceAll("").trim()).toString();
         this.gftStr = gtfStr;
->>>>>>> 7c726f46a6dabb193760aad29749465990130555
+
         
         //generate direction map       
         this.directionMap = new HashMap<>();
