@@ -118,13 +118,13 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
                                 GenoType genoType = new GenoType(20);                            
 				String patternName = args.length > 0 ? args[0] : "ourPattern";
 				System.out.println("Game of Life with starting pattern: " + patternName);
-				//final String pattern = Library.get(patternName);
-                                Factory<Genotype<BitGene>> gtf = genoType.getGtf();
-                                String gtfStr=genoType.getGtfStr(gtf);
-                                System.out.println("my pattern: "+genoType.getPetternStr(gtfStr));
-                                final String pattern = genoType.getPetternStr(gtfStr);
-				//final Behavior generations = run(0L, pattern);
-                                Long generations = myRun(pattern);
+				final String pattern = Library.get(patternName);
+//                                Factory<Genotype<BitGene>> gtf = genoType.getGtf();
+//                                String gtfStr=genoType.getGtfStr(gtf);
+//                                System.out.println("my pattern: "+genoType.getPetternStr(gtfStr));
+//                                final String pattern = genoType.getPetternStr(gtfStr);
+				final Behavior generations = run(0L, pattern);
+                                //Long generations = myRun(pattern);
 				System.out.println("Ending Game of Life after " + generations + " generations");
 		}
 

@@ -68,7 +68,7 @@ public class JeneticsAlgorithm {
 
 
         String pos=getStartingPattern(result);
-        System.out.println("Best:"+result);
+        System.out.println("Best:"+pos);
     }
     
     public static String getStartingPattern(Genotype<BitGene> result){

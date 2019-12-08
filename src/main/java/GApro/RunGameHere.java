@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class RunGameHere {
     
-    private static int sizeOfPopulation = 10;
+    private static int sizeOfPopulation = 20;
          
     public static void main(String[] args) {
         
@@ -62,18 +62,36 @@ public class RunGameHere {
                                  Map.Entry::getValue,
                                  (e1, e2) -> e1,
                                  LinkedHashMap::new));
-
         
-        //top 5
+        
         int top = 1;
-        for(String pattern : sortedMap.keySet()){
-            if(top <= 10){
-                System.out.println("top "+top+" genoType is: "+pattern+"\nFitness Score is "+sortedMap.get(pattern));
+        String top1Pettern = "";
+        for(String genotype : sortedMap.keySet()){
+            GenoType geno = new GenoType();
+            top1Pettern = geno.getPetternStr(genotype);
+            break;
+        }
+        
+        //run top one for a demo
+        System.out.println("\n Here for top1 demo");
+        Long demo = myRun(top1Pettern);
+        
+        //rank
+        System.out.println("\n Here for rank");
+        for(String genotype : sortedMap.keySet()){
+            if(top <= 20){
+                if(top == 1){
+                    top1Pettern = genotype;
+                }
+                GenoType geno = new GenoType();
+                String pattern = geno.getPetternStr(genotype);
+                System.out.println("top "+top+" pattern is: "+pattern+"\nFitness Score is "+sortedMap.get(genotype));
                 top++;
             }
+            
         }
 
-
+        
 
         
     }
