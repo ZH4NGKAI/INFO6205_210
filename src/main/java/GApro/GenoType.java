@@ -19,14 +19,12 @@ public class GenoType{
     private int numberOfChromosome;
     //private String petternStr;
     private String gftStr;
-    private HashMap<String,String> directionMap;
+    private static HashMap<String,String> directionMap;
     
     public GenoType(int numberOfChromosome){
         this.numberOfChromosome=numberOfChromosome;
         Factory<Genotype<BitGene>> gtf =
             Genotype.of(BitChromosome.of(8,0.5),numberOfChromosome);
-        
-        // remove ",[]" from gtf
         String gtfStr = gtf.toString();
 	Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtfStr);
@@ -55,7 +53,7 @@ public class GenoType{
     }
     
     //gene expression (from gnee to pattern)
-    public String getPetternStr(String gtfStr) {
+    public static String getPetternStr(String gtfStr) {
         //generate pattern String
         String patternStr = "";
         //String gtfStr = this.gftStr;
