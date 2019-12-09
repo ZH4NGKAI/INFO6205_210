@@ -4,7 +4,7 @@ Bochao Wang 001087950
 ## Class:
 
 ### 1.Fitness: 
-Define a simple Fitness function: fitnessScore = generations * growthrate + 100
+Define a simple Fitness function: fitnessScore = generations 
 
 ### 2.GenoType: 
 Define chromosomes and genotypes, and how genotypes are expressed
