@@ -48,4 +48,17 @@ public class FitnessTest {
         System.out.println(fitness);
 //        assertEquals(0, fitness);
     }
+    
+    @Test
+		public void testFitness4() {
+				String patternName = "Blinker";
+				System.out.println("Game of Life with starting pattern: " + patternName);
+				final String pattern = Library.get(patternName);
+				Fitness fitness = new Fitness(pattern);
+                                Game game=new Game();
+                                long generation = Game.myRunWithoutPrint(pattern);
+                                //double rate = game.growthRate();
+                                long result = generation;
+				assertEquals(result, fitness.getFitnessScore());
+		}
 }
