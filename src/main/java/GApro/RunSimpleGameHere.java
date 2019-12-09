@@ -17,6 +17,7 @@ import io.jenetics.Optimize;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -64,35 +65,29 @@ public class RunSimpleGameHere {
                                  LinkedHashMap::new));
         
         
-        int top = 1;
-        String top1Pettern = "";
-        for(String genotype : sortedMap.keySet()){
-            GenoType geno = new GenoType();
-            top1Pettern = geno.getPetternStr(genotype);
-            break;
-        }
+       
         
         //run top one for a demo
-        System.out.println("\n Here for top1 demo");
-        Long demo = myRun(top1Pettern);
+        int top = 1;
+        ArrayList<String> rankedPattern = new ArrayList<>();
         
         //rank
         System.out.println("\n Here for rank");
         for(String genotype : sortedMap.keySet()){
             if(top <= 20){
-                if(top == 1){
-                    top1Pettern = genotype;
-                }
                 GenoType geno = new GenoType();
                 String pattern = geno.getPetternStr(genotype);
                 System.out.println("top "+top+" pattern is: "+pattern+"\nFitness Score is "+sortedMap.get(genotype));
+                rankedPattern.add(pattern);
                 top++;
             }
             
         }
 
-        
-
+        //run top one for a demo
+        System.out.println("\n Here for top1 demo");
+        String pattern = rankedPattern.get(0);
+        Long demo = myRun(pattern);
         
     }
     
