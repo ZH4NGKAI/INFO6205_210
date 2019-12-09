@@ -33,7 +33,7 @@ public class MutationTest {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 10);
 //        ExecutorService executor = Executors.newFixedThreadPool(8);
-        Engine<BitGene, Double> engine
+        Engine<BitGene, Long> engine
                     = Engine.builder(JeneticsAlgorithm::eval, gtf)
                             .offspringFraction(0.2)  
                             .populationSize(1)

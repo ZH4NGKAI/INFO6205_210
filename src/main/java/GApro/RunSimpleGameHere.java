@@ -8,7 +8,7 @@ package GApro;
 import edu.neu.coe.info6205.life.base.Game;
 import edu.neu.coe.info6205.life.base.Game.Behavior;
 import static edu.neu.coe.info6205.life.base.Game.myRun;
-import static edu.neu.coe.info6205.life.base.Game.myRunWithoutPrint;
+//import static edu.neu.coe.info6205.life.base.Game.myRunWithoutPrint;
 import io.jenetics.BitGene;
 import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
@@ -17,7 +17,6 @@ import io.jenetics.Optimize;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -45,9 +44,10 @@ public class RunSimpleGameHere {
             System.out.println("Now running the No. "+genoTypeNo+" Genotype ... please wait");
             String pattern = patternMap.get(genoType);
             
-            Long generations = myRunWithoutPrint(pattern);
+            Game game=new Game();
+            Long generations = game.myRunWithoutPrint(pattern);
             
-            Fitness fitness = new Fitness(pattern);
+            Fitness fitness = new Fitness(pattern,genoType.length()/8,game.counted,generations);
             double fitnessScore = fitness.getFitnessScore();
             scoreMap.put(genoType,fitnessScore);
             genoTypeNo++;
@@ -65,29 +65,48 @@ public class RunSimpleGameHere {
                                  LinkedHashMap::new));
         
         
-       
-        
-        //run top one for a demo
         int top = 1;
-        ArrayList<String> rankedPattern = new ArrayList<>();
+        String top1Pettern = "";
+        for(String genotype : sortedMap.keySet()){
+            GenoType geno = new GenoType();
+            top1Pettern = geno.getPetternStr(genotype);
+            break;
+        }
+        
+//        //run top one for a demo
+        System.out.println("\n Here for top1 demo");
+        Long demo = myRun(top1Pettern);
         
         //rank
         System.out.println("\n Here for rank");
         for(String genotype : sortedMap.keySet()){
             if(top <= 20){
+                if(top == 1){
+                    top1Pettern = genotype;
+                }
                 GenoType geno = new GenoType();
                 String pattern = geno.getPetternStr(genotype);
                 System.out.println("top "+top+" pattern is: "+pattern+"\nFitness Score is "+sortedMap.get(genotype));
-                rankedPattern.add(pattern);
+                System.out.println("genoType is: "+genotype);
                 top++;
             }
             
         }
+        
+//        String pos="0 2, 2 2, 3 3, 3 0, 1 -1, -3 0, 0 -2, 0 5, -2 0, 0 -3, -2 -2, 4 4, 0 0, 2 -2, 0 4, 2 0";
+//        Game game=new Game();
+//        Long generations = game.myRunWithoutPrint(pos);
+//        int endlength = game.counted;
+//        double rate = 0;
+//        if(generations>0){
+//          rate = (endlength-20)*1.000/generations;  
+//        }
+//        else{
+//            rate=0;
+//        }
+//        System.out.println("Score:"+rate);
+        
 
-        //run top one for a demo
-        System.out.println("\n Here for top1 demo");
-        String pattern = rankedPattern.get(0);
-        Long demo = myRun(pattern);
         
     }
     
