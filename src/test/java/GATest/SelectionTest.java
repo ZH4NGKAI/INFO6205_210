@@ -50,6 +50,6 @@ public class SelectionTest {
         
         
         System.out.println("Best:"+pos);
-        System.out.println("Generation:" + new Fitness(pos).getGeneration());
+        //System.out.println("Generation:" + new Fitness(pos,5).getGeneration());
     }
 }

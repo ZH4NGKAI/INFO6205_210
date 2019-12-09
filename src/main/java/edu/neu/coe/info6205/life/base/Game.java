@@ -105,7 +105,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				}
 				long growth = (long) getCount() - game.getCount();
 				long generations = generation - game.generation;
-				return generations > 0 ? growth * 1.0 / generations : -0.1;
+				return generations > 0 ? (double)(growth * 1.000 / generations) : -0.1;
 		}
 
 		public static int MaxGenerations = 1000;
@@ -118,7 +118,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
                                 GenoType genoType = new GenoType(20);                            
 				String patternName = args.length > 0 ? args[0] : "ourPattern";
 				System.out.println("Game of Life with starting pattern: " + patternName);
-				final String pattern = Library.get(patternName);
+				final String pattern = "0 -4, -2 0, -4 4, 3 3, 2 -2, 0 -3, 1 -1, -1 0, 0 -2";
 //                                Factory<Genotype<BitGene>> gtf = genoType.getGtf();
 //                                String gtfStr=genoType.getGtfStr(gtf);
 //                                System.out.println("my pattern: "+genoType.getPetternStr(gtfStr));
@@ -154,7 +154,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				return game.generation;
 		}
                 
-                public static Long myRunWithoutPrint(String pattern) {
+                public Long myRunWithoutPrint(String pattern) {
 				final long generation = 0L;
 				final Grid grid = new Grid(generation);
 				grid.add(Group.create(generation, pattern));
@@ -167,6 +167,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 						game = game.generation(gridMonitor);
 				}
 				System.out.println("Ending Game of Life after " + game.generation + " generations and with " + game.getCount() + " cells");
+                                this.counted=game.getCount();
 				return game.generation;
 		}
                 
@@ -370,5 +371,5 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		private final Game previous;
 		private final BiConsumer<Long, Group> monitor;
 		public final long generation;
-		
+		public  int counted;
 }

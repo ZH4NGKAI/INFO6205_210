@@ -12,21 +12,26 @@ import edu.neu.coe.info6205.life.base.Game;
  * @author wangbaichao
  */
 public class Fitness {
-    private long fitnessScore;
+    private double fitnessScore;
     private String gtfStr;
     private long generation;
     
     
-    public Fitness(String gtfStr){
+    public Fitness(String gtfStr, int length, int endlength,long generation){
         this.gtfStr=gtfStr;
         Game game=new Game();
-        this.generation = Game.myRunWithoutPrint(gtfStr);
-        //double rate = game.growthRate();
-        this.fitnessScore = this.generation;
-    
+        this.generation = generation;
+        if(generation>0){
+          double rate = (endlength-length)*1.000/generation;  
+          this.fitnessScore = rate;
+        }
+        else{
+            this.fitnessScore = 0;
+        }
+
     }
 
-    public long getFitnessScore() {
+    public double getFitnessScore() {
         return fitnessScore;
     }
 

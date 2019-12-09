@@ -34,9 +34,6 @@ import java.util.regex.Pattern;
  */
 public class JeneticsAlgorithm {
     private static int run;
-    
-    
-    //fitnessFunction
     public static double eval(Genotype<BitGene> gt) {
         String gtS = gt.toString();
         Pattern p = Pattern.compile("[^0-9]");  
@@ -45,17 +42,25 @@ public class JeneticsAlgorithm {
         String gtStr = GenoType.getPetternStr(gtS);
 
         Game game=new Game();
-        Game.myRunWithoutPrint(gtStr);
-        double growth = game.growthRate();
+        Long generations = game.myRunWithoutPrint(gtStr);
+        int endlength = game.counted;
+        double rate = 0;
+        if(generations>0){
+          rate = (endlength-20)*1.000/generations;  
+        }
+        else{
+            rate=0;
+        }
+
         run++;
-        return growth;
+        return rate;
     }
     
     public static void main(String[] args) {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 20);
         ExecutorService executor = Executors.newFixedThreadPool(8);
-        Engine<BitGene, Double> engine
+        Engine<BitGene, Long> engine
                     = Engine.builder(JeneticsAlgorithm::eval, gtf)
                             .offspringFraction(0.5)
                             .populationSize(10)
@@ -67,7 +72,7 @@ public class JeneticsAlgorithm {
 
         Genotype<BitGene> result
                     = engine.stream()
-                            .limit(Limits.bySteadyFitness(999))
+                            .limit(Limits.bySteadyFitness(1000))
                             .collect(EvolutionResult.toBestGenotype());
             
         System.out.println("RUN:     "+run);
@@ -76,6 +81,20 @@ public class JeneticsAlgorithm {
 
         String pos=getStartingPattern(result);
         System.out.println("Best:"+pos);
+        
+        Game game=new Game();
+        Long generations = game.myRunWithoutPrint(pos);
+        int endlength = game.counted;
+        double rate = 0;
+        if(generations>0){
+          rate = (endlength-20)*1.000/generations;  
+        }
+        else{
+            rate=0;
+        }
+        System.out.println("Score:"+rate);
+        
+        
     }
     
     public static String getStartingPattern(Genotype<BitGene> result){
