@@ -34,7 +34,10 @@ import java.util.regex.Pattern;
  */
 public class JeneticsAlgorithm {
     private static int run;
-    public static long eval(Genotype<BitGene> gt) {
+    
+    
+    //fitnessFunction
+    public static double eval(Genotype<BitGene> gt) {
         String gtS = gt.toString();
         Pattern p = Pattern.compile("[^0-9]");  
 	Matcher m = p.matcher(gtS);
@@ -42,17 +45,17 @@ public class JeneticsAlgorithm {
         String gtStr = GenoType.getPetternStr(gtS);
 
         Game game=new Game();
-        Long generations = Game.myRunWithoutPrint(gtStr);
-
+        Game.myRunWithoutPrint(gtStr);
+        double growth = game.growthRate();
         run++;
-        return generations;
+        return growth;
     }
     
     public static void main(String[] args) {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 20);
         ExecutorService executor = Executors.newFixedThreadPool(8);
-        Engine<BitGene, Long> engine
+        Engine<BitGene, Double> engine
                     = Engine.builder(JeneticsAlgorithm::eval, gtf)
                             .offspringFraction(0.5)
                             .populationSize(10)
@@ -64,7 +67,7 @@ public class JeneticsAlgorithm {
 
         Genotype<BitGene> result
                     = engine.stream()
-                            .limit(Limits.bySteadyFitness(1000))
+                            .limit(Limits.bySteadyFitness(999))
                             .collect(EvolutionResult.toBestGenotype());
             
         System.out.println("RUN:     "+run);

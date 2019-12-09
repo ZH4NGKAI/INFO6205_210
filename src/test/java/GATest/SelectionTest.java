@@ -32,7 +32,7 @@ public class SelectionTest {
         GenoType genotype = new GenoType(1);
         Factory<Genotype<BitGene>> gtf = Genotype.of(BitChromosome.of(8,0.5), 5);
 //        ExecutorService executor = Executors.newFixedThreadPool(8);
-        Engine<BitGene, Long> engine
+        Engine<BitGene, Double> engine
                     = Engine.builder(JeneticsAlgorithm::eval, gtf)
 //                            .offspringFraction(0.3)  
 //                            .survivorsFraction(0)
